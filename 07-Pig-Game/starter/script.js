@@ -14,16 +14,13 @@ const players = document.querySelectorAll('.player');
 const holdBtn = document.querySelector('.btn--hold');
 const newBtn = document.querySelector('.btn--new');
 
-for (let i = 0; i < 2; i++) {
-  score[i].textContent = 0;
-}
-
 const togglePlayer = () => {
   currentScore[activePlayer].textContent = currentScoreOfPlayer;
-  scores[activePlayer] =
-    currentScoreOfPlayer > scores[activePlayer]
-      ? currentScoreOfPlayer
-      : scores[activePlayer];
+  // scores[activePlayer] =
+  //   currentScoreOfPlayer > scores[activePlayer]
+  //     ? currentScoreOfPlayer
+  //     : scores[activePlayer];
+  scores[activePlayer] += currentScoreOfPlayer;
   currentScoreOfPlayer = 0;
   console.log(scores);
   score[activePlayer].textContent = scores[activePlayer];
@@ -48,7 +45,14 @@ const rollDice = () => {
     togglePlayer();
   } else {
     currentScoreOfPlayer += diceNumber;
-    currentScore[activePlayer].textContent = currentScoreOfPlayer;
+    if (scores[activePlayer] + currentScoreOfPlayer >= 50) {
+      currentScoreOfPlayer += scores[activePlayer];
+      console.log(currentScoreOfPlayer + scores[activePlayer]);
+      score[activePlayer].textContent = currentScoreOfPlayer;
+      players[activePlayer].classList.add('player--winner');
+    } else {
+      currentScore[activePlayer].textContent = currentScoreOfPlayer;
+    }
   }
 };
 
@@ -66,4 +70,6 @@ newBtn.addEventListener('click', () => {
   }
   players[0].classList.add('player--active');
   players[1].classList.remove('player--active');
+  players[0].classList.remove('player--winner');
+  players[1].classList.remove('player--winner');
 });
